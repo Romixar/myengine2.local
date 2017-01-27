@@ -14,6 +14,18 @@ if(isset($_POST['login_f'])){// страница логинизации
     
     $row = mysqli_fetch_assoc($query);
     
+    if($row['ip']){
+        
+        $arr = explode(',',$row['ip']);
+        
+        if(!in_array($_SERVER['REMOTE_ADDR'],$arr)) message('С вашего ip доступ запрещён!');
+        
+        
+    }
+    
+    
+    
+    
     foreach($row as $k => $v) $_SESSION[$k] = $v;
     
     go('profile');
@@ -81,7 +93,7 @@ if(isset($_POST['confirm_f'])){// страница подтверждение р
 
         if($_SESSION['confirm']['code'] != $_POST['code']) message('Код потверждения указан не верно!');
         
-        mysqli_query($conn,"INSERT INTO `user` VALUES ('', '', '".$_SESSION['confirm']['email']."', '".$_SESSION['confirm']['password']."')");
+        mysqli_query($conn,"INSERT INTO `user` VALUES ('', '', '".$_SESSION['confirm']['email']."', '".$_SESSION['confirm']['password']."', '')");
         
         unset($_SESSION['confirm']);
         go('login');
