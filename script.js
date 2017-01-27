@@ -23,14 +23,16 @@ function post_query(url, name, data){
                 
                 //alert(res);
                 var obj = jQuery.parseJSON(res);
-                if(obj.go) location.href = '/' + obj.go;// редирект
-                if(obj) console.log(obj);// редирект
-                if(obj.message) alert(obj.message);
+                //if(obj.go) location.href = '/' + obj.go;// редирект (мой вариант редиректа)
+                if(obj.go) go(obj.go);// редирект
+                else alert(obj.message);
                 
-            }
-
-            
+                if(obj) console.log(obj);
+                   
+            }  
         })
-    
-    //alert(str);
+}
+
+function go(url){
+    window.location.href='/'+url;
 }

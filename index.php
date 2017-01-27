@@ -15,19 +15,19 @@ $conn = mysqli_connect('localhost','root','','myengine2');
 if(!$conn) exit('Ошибка подключения к БД!');
 
 
-
-
 session_start();
 
+//unset($_SESSION);
+//print_r($_SESSION);
 //exit(print_r($_SESSION));
 
 
 // проверка сессии и подключение файлов для авторизов-х, гостей, и общей для всех
 if(file_exists('all/'.$page.'.php')) include 'all/'.$page.'.php';
 
-elseif(($_SESSION['ulogin'] == 1) && file_exists('auth/'.$page.'.php')) include 'auth/'.$page.'.php';
+elseif($_SESSION['id'] && file_exists('auth/'.$page.'.php')) include 'auth/'.$page.'.php';
 
-elseif(($_SESSION['ulogin'] != 1) && file_exists('guest/'.$page.'.php')) include 'guest/'.$page.'.php';
+elseif(!$_SESSION['id'] && file_exists('guest/'.$page.'.php')) include 'guest/'.$page.'.php';
 
 else exit('Страница 404');
 
@@ -59,7 +59,7 @@ function captcha_show(){
     $questions = [
         1 => 'Столица России?',
         2 => 'Мультик с волком и заяцем?',
-        3 => 'Имя терминатора?',
+        3 => 'Имя терминатора в жизни?',
         4 => 'Пять плюс пять?',
         5 => 'Имя президента России?',
         6 => 'Сколько месяцев в году?',
@@ -82,8 +82,8 @@ function captcha_valid(){
         1 => 'москва',
         2 => 'ну погоди',
         3 => 'арнольд',
-        4 => 'десять?',
-        5 => 'владимир?',
+        4 => 'десять',
+        5 => 'владимир',
         6 => 'двеннадцать',
         7 => 'февраль',
         8 => 'семь',
@@ -99,9 +99,7 @@ function captcha_valid(){
         
         message('Ответ на вопрос не верный!');
         
-    }else message('Всё ок!');
-        
-    
+    }
 }
 
 function email_valid(){
@@ -128,19 +126,21 @@ function top($title){
     <script src="http://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="/script.js"></script>
     </head>
-    
     <body>
-    
     <div class="wrapper">
+    <div class="menu">';
     
-    <div class="menu">
+    if($_SESSION['id']){
+        echo '<a href="/profile">Профайл</a>
+              <a href="/history">История</a>
+              <a href="/logout">Выход</a>';
+    }else{
+        echo '<a href="/">Главная</a>
+              <a href="/login">Вход</a>
+              <a href="/register">Регистрация</a>';
+    }
     
-    <a href="/">Главная</a>
-    <a href="/login">Вход</a>
-    <a href="/register">Регистрация</a>
-    
-    </div>
-    
+    echo '</div>
     <div class="content">
     <div class="block">';
 }
