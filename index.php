@@ -28,6 +28,7 @@ session_start();
 //unset($_SESSION);
 //print_r($_SESSION);
 //exit(print_r($_SESSION));
+//if(file_exists($page.'.php'))
 
 
 // проверка сессии и подключение файлов для авторизов-х, гостей, и общей для всех
@@ -140,6 +141,26 @@ function pass_valid(){
     else $_POST['password'] = md5($_POST['password']);
 }
 
+
+function sendMail($email,$title,$text){
+    mail($email,$title,
+        '<!DOCTYPE html>
+        <html>
+        <head>
+        <title>'.$title.'</title>
+        </head>
+        <body style="margin:0px;">
+        <div style="padding:0px;font-size:18px;font-family:Arial sans-serif;font-weight:bold;text-align:center;background:#FCFCDF;">
+           <div style="background:#464E78;margin:0;padding:25px;color:#fff;">
+               Тема письма: '.$title.'
+           </div>
+           <div style="padding:30px;">
+               <div style="background:#FFF;border-radius:10px;padding:25px;border:1px solid #EEEFF2">'.$text.'</div>
+           </div>
+        </div>
+        </body>
+        </html>','From: admin@zolushka18.ru'."\r\n".'MIME-Version 1.0'."\r\n".'Content-type: text/html; charset=UTF-8');
+}
 
 
 function top($title){

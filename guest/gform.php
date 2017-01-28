@@ -38,7 +38,7 @@ if(isset($_POST['login_f'])){// страница логинизации
             'code' => $code,
         ];
         
-        mail($_POST['email'],'Подтверждение входа',"Для подтверждения входа по E-mail укажите на сайте данный код: $code");
+        sendMail($_POST['email'],'Подтверждение входа',"Для подтверждения входа по E-mail укажите на сайте данный код: $code");
     
         go('confirm');
     }
@@ -73,7 +73,7 @@ if(isset($_POST['register_f'])){// страница регистрации
             
     ];
         
-    mail($_POST['email'],'Подтверждение регистрации',"Вставьте на сайте данный код: $code");
+    sendMail($_POST['email'],'Подтверждение регистрации',"Вставьте на сайте данный код: $code");
     go('confirm');// редирект на страницу подтверждения
 
     
@@ -98,7 +98,7 @@ if(isset($_POST['recovery_f'])){// страница восстановление
             
     ];
         
-    mail($_POST['email'],'Восстановление пароля',"Для восстановления пароля вставьте на сайте данный код: $code");
+    sendMail($_POST['email'],'Восстановление пароля',"Для восстановления пароля вставьте на сайте данный код: $code");
     go('confirm');// редирект на страницу подтверждения
     
     
@@ -129,7 +129,7 @@ if(isset($_POST['confirm_f'])){// страница подтверждение р
         
         mysqli_query($conn,"UPDATE `user` SET `password` = '".md5($newpass)."' WHERE `email` = '".$_SESSION['confirm']['email']."'");
         
-        mail($_SESSION['confirm']['email'],'Новый пароль','Ваш новый пароль: '.$newpass);
+        sendMail($_SESSION['confirm']['email'],'Новый пароль','Ваш новый пароль: '.$newpass);
         
         unset($_SESSION['confirm']);
         
