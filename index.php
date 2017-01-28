@@ -94,6 +94,15 @@ function servicesPrice($id){
     return $arr[$id];
 }
 
+function getDiscount($code){
+    $arr = [
+        'AAA' => 10,
+        'GGG' => 50,
+    ];
+    
+    return $arr[$code];
+}
+
 function captcha_valid(){
     
     $answers = [
