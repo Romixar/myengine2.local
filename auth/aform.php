@@ -27,9 +27,20 @@
                 
             }else $_SESSION['ip'] = '';
             
-            mysqli_query($conn,"UPDATE `user` SET `ip` = '".$_SESSION['ip']."'");
+            mysqli_query($conn,"UPDATE `user` SET `ip` = '".$_SESSION['ip']."' WHERE `id` = ".$_SESSION['id']);
         
         }
+        
+        
+        if($_POST['protected'] != $_SESSION['protected']){
+            
+            
+            if($_POST['protected'] == 1) $_SESSION['protected'] = 1;
+            else $_SESSION['protected'] = 0;
+            
+            mysqli_query($conn,"UPDATE `user` SET `protected` = '".$_SESSION['protected']."' WHERE `id` = ".$_SESSION['id']);
+        }
+        
         
         
         

@@ -1,10 +1,16 @@
 <?php
 
+function goAuth($data){
+    foreach($data as $k => $v) $_SESSION[$k] = $v;
+    
+    go('profile');
+}
+
 if(isset($_POST['login_f'])){// страница логинизации
     
-    captcha_valid();
     email_valid();
     pass_valid();
+    captcha_valid();
     
     $query = mysqli_query($conn,"SELECT `id` FROM `user` WHERE `email` = '".$_POST['email']."' AND `password` = '".$_POST['password']."'");
 
@@ -23,12 +29,25 @@ if(isset($_POST['login_f'])){// страница логинизации
         
     }
     
+    if($row['protected'] == 1){
+        $code = rand_str(5);
+        
+        $_SESSION['confirm'] = [
+            'type' => 'login',
+            'data' => $row,
+            'code' => $code,
+        ];
+        
+        mail($_POST['email'],'Подтверждение входа',"Для подтверждения входа по E-mail укажите на сайте данный код: $code");
+    
+        go('confirm');
+    }
     
     
+    goAuth($row);
+    //foreach($row as $k => $v) $_SESSION[$k] = $v;
     
-    foreach($row as $k => $v) $_SESSION[$k] = $v;
-    
-    go('profile');
+    //go('profile');
     
     
 }
@@ -93,7 +112,11 @@ if(isset($_POST['confirm_f'])){// страница подтверждение р
 
         if($_SESSION['confirm']['code'] != $_POST['code']) message('Код потверждения указан не верно!');
         
-        mysqli_query($conn,"INSERT INTO `user` VALUES ('', '', '".$_SESSION['confirm']['email']."', '".$_SESSION['confirm']['password']."', '')");
+        if(is_numeric($_COOKIE['ref']) && $_COOKIE['ref'] > 0 && (strpos($_COOKIE['ref'],'.') === false)){
+            $ref = (int) $_COOKIE['ref'];
+        }else $ref = 0;
+        
+        mysqli_query($conn,"INSERT INTO `user` VALUES ('', '', '".$_SESSION['confirm']['email']."', '".$_SESSION['confirm']['password']."', '', 0, $ref, 0)");
         
         unset($_SESSION['confirm']);
         go('login');
@@ -111,6 +134,12 @@ if(isset($_POST['confirm_f'])){// страница подтверждение р
         unset($_SESSION['confirm']);
         
         message('Новый пароль отправлен на Ваш email');
+        
+    }elseif($_SESSION['confirm']['type'] == 'login'){
+
+        if($_SESSION['confirm']['code'] != $_POST['code']) message('Код потверждения указан не верно!');
+        
+        goAuth($_SESSION['confirm']['data']);
         
     }
     

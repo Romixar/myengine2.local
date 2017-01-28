@@ -1,6 +1,6 @@
 <?php
 
-$query = mysqli_query($conn, 'SELECT `text` FROM `history` LIMIT '.$_SESSION['offset'].', 2');
+$query = mysqli_query($conn, 'SELECT `text` FROM `history` WHERE `user_id` = '.$_SESSION['id'].' ORDER BY `id` DESC LIMIT '.$_SESSION['offset'].', 2');
 
 if(!mysqli_num_rows($query)){
     

@@ -1,5 +1,13 @@
 <?php
 
+if(is_numeric($_GET['ref']) && $_GET['ref'] > 0 && (strpos($_GET['ref'],'.') === false)){
+    
+    setcookie('ref',$_GET['ref'],strtotime('+1 week'));
+    header('location: /home');
+    
+}
+
+
 if($_SERVER['REQUEST_URI'] == '/') $page = 'home';
 else{
     $page = substr($_SERVER['REQUEST_URI'], 1);// получаю без первого слэша адр строку
@@ -76,6 +84,16 @@ function captcha_show(){
     
 }
 
+function servicesPrice($id){
+    $arr = [
+        1 => 100,
+        2 => 250,
+        3 => 450,
+    ];
+    
+    return $arr[$id];
+}
+
 function captcha_valid(){
     
     $answers = [
@@ -128,11 +146,15 @@ function top($title){
     </head>
     <body>
     <div class="wrapper">
-    <div class="menu">';
+    <div class="menu">
+    <a href="/contact">Обратная связь</a>';
     
     if($_SESSION['id']){
         echo '<a href="/profile">Профайл</a>
+              <a href="/reviews">Отзывы</a>
               <a href="/history">История</a>
+              <a href="/referral">Рефералы</a>
+              <a href="/services">Наши услуги</a>
               <a href="/logout">Выход</a>';
     }else{
         echo '<a href="/">Главная</a>

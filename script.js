@@ -9,11 +9,13 @@ function post_query(url, name, data){
     
     $.each(data.split('.'), function(key, val){// для каждого элемента data
         
-        str += '&' + val + '=' + $('#'+val).val();
+        str += '&' + val + '=' + $('#'+val).val();// лепим строку из данных формы
         
     });
     
-    $.ajax({
+    //console.log(str);
+    
+    $.ajax({// отправляем её
             
             url: '/' + url,
             type: 'POST',
@@ -22,6 +24,7 @@ function post_query(url, name, data){
             success: function(res){
                 
                 //alert(res);
+                if(res)console.log(res);
                 var obj = jQuery.parseJSON(res);
                 //if(obj.go) location.href = '/' + obj.go;// редирект (мой вариант редиректа)
                 if(obj.go) go(obj.go);// редирект
