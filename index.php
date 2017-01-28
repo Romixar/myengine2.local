@@ -1,4 +1,14 @@
 <?php
+$handle = @fopen("ban.txt", "r");
+if($handle){
+    while(($buffer = fgets($handle, 4096)) !== false){
+        if(trim($buffer) === $_SERVER['REMOTE_ADDR']) exit('Доступ к сайту с вашего IP запрещён!');
+    }
+    if(!feof($handle)){
+        echo "Error: unexpected fgets() fail\n";
+    }
+    fclose($handle);
+}
 
 if(is_numeric($_GET['ref']) && $_GET['ref'] > 0 && (strpos($_GET['ref'],'.') === false)){
     
