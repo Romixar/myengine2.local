@@ -6,6 +6,8 @@ top('Отзывы');
 
 
 <h1>Отзывы</h1>
+<p><button onclick="bbcode('url')">Ссылка</button><button onclick="bbcode('audio')">Аудио</button><button onclick="bbcode('video')">Видео</button></p>
+
 <p><textarea id="mes" cols="30" rows="10" placeholder="Текст сообщения"></textarea></p>
 
 <p><button onclick="post_query('add','reviews','mes')">Добавить</button></p>
@@ -25,7 +27,7 @@ top('Отзывы');
             
             $str .= '<li>
                 <p> - <span>'.$email['email'].'</span> - </p>
-                <p>'.nl2br($row['text'],false).'</p></li>';
+                <p>'.bbcode(nl2br($row['text'],false)).'</p></li>';// заменяю разрешённые теги
         }
         $str .= '</ul>';
     }

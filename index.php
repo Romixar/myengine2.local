@@ -69,6 +69,48 @@ function notFound(){
     exit('Страница не найдена...');
 }
 
+function bbcode($text){
+    
+    $search = [// что ищем в тектсе
+        '[b]',
+        '[/b]',
+        '[i]',
+        '[/i]',
+        '[url=',
+        '*name=',
+        '[/url]',
+        '[audio]',
+        '[/audio]',
+        '[video]',
+        '[/video]',
+        
+        
+        
+        //'[url=http://mysite.ru*name=Тело ссылки[/url]',
+    ];
+    
+    $repl = [//на что заменим
+        '<b>',
+        '</b>',
+        '<i>',
+        '</i>',
+        '<a href="',
+        '">',
+        '</a>',
+        '<audio src="',
+        '" controls ></audio>',
+        '<video width="400" height="300" src="',
+        '" controls ></video>',
+        
+        
+//        '<a href="http://mysite.ru]Тело ссылки[/url]',
+    ];
+    
+    
+    
+    return str_replace($search,$repl,$text);
+}
+
 
 function rand_str($len=30){// получаю случайную строку символов
     $str = '1234567890QWERTYUIOPLKJHGFDSAZXCVBNMqwertyuioplkjhgfdsazxcvbnm-_';

@@ -36,6 +36,29 @@ function post_query(url, name, data){
         })
 }
 
+function bbcode(name){
+    
+    if(name == 'video' || name == 'audio'){
+        url = prompt('URL вашего видео/аудио:','');// url примет введённый URL видео
+        if(url) var data = '['+name+']'+url+'[/'+name+']';
+    }
+    if(name == 'url'){
+        href = prompt('URL вашей ссылки:','');// url примет введённый URL видео
+        if(href) var body = prompt('Тело вашей ссылки:','');
+        if(name) data = '[url='+href+'*name='+body+'[/url]';
+    }
+    
+    if(data) $('#mes').append(data);
+}
+
 function go(url){
     window.location.href='/'+url;
 }
+
+
+
+
+
+
+
+
