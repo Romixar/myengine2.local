@@ -22,7 +22,7 @@ if($_SERVER['REQUEST_URI'] == '/') $page = 'home';
 else{
     $page = substr($_SERVER['REQUEST_URI'], 1);// получаю без первого слэша адр строку
     
-    if(!preg_match('/^[A-z0-9]{3,15}$/', $page)){// проверка от мусора в URL
+    if(!preg_match('/^[A-z0-9\.]{3,15}$/', $page)){// проверка от мусора в URL
         notFound();
     }
 }
@@ -47,6 +47,8 @@ if(file_exists('all/'.$page.'.php')) include 'all/'.$page.'.php';
 elseif($_SESSION['id'] && file_exists('auth/'.$page.'.php')) include 'auth/'.$page.'.php';
 
 elseif(!$_SESSION['id'] && file_exists('guest/'.$page.'.php')) include 'guest/'.$page.'.php';
+
+elseif($_SESSION['admin'] && file_exists('admin/'.$page.'.php')) include 'admin/'.$page.'.php';
 
 else exit('Страница 404');
 
